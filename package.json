@@ -1,14 +1,14 @@
 {
   "name": "google-trends-api",
   "version": "1.0.0",
-  "description": "API pública para dados do Google Trends",
+  "description": "API que retorna dados do Google Trends",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "keywords": [],
-  "author": "Pedilar",
-  "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  },
   "dependencies": {
     "express": "^4.18.2",
     "google-trends-api": "^4.9.0"
