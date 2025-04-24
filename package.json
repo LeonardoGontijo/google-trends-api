@@ -1,7 +1,7 @@
 {
   "name": "google-trends-api",
   "version": "1.0.0",
-  "description": "API que retorna dados do Google Trends",
+  "description": "API que retorna dados do Google Trends com Puppeteer-Core",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
