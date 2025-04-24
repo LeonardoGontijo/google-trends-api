@@ -1,16 +1,18 @@
 const express = require('express');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get('/trends', async (req, res) => {
   const keyword = req.query.keyword || 'Inteligência Artificial';
+  let browser;
 
   try {
-    const browser = await puppeteer.launch({
+    browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      executablePath: '/usr/bin/google-chrome',
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
 
     const page = await browser.newPage();
@@ -18,9 +20,7 @@ app.get('/trends', async (req, res) => {
       waitUntil: 'networkidle2',
     });
 
-    // Exemplo simples: extrair o título da página
     const title = await page.title();
-
     await browser.close();
 
     res.json({
@@ -28,8 +28,8 @@ app.get('/trends', async (req, res) => {
       titulo: title,
       status: 'OK',
     });
-
   } catch (err) {
+    if (browser) await browser.close();
     res.status(500).json({
       error: 'Erro ao buscar dados do Google Trends com Puppeteer',
       details: err.message,
@@ -38,9 +38,9 @@ app.get('/trends', async (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('API Google Trends via Puppeteer está ativa. Use /trends?keyword=...');
+  res.send('API do Google Trends com Puppeteer ativa. Use o endpoint /trends?keyword=...');
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
